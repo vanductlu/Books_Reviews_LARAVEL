@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
                         Book Details
@@ -15,10 +15,13 @@
                         <p>Publication Year: {{ $book->Publication_Year }}</p>
                         <p>ISBN: {{ $book->ISBN }}</p>
                         <p>Cover Image:</p>
-                        <img src="{{asset('/storage/'. $book->Cover_Image_URL)}}" alt="Cover Image" style="max-height: 200px;">
+                        <img src="{{ asset('/storage/'. $book->Cover_Image_URL) }}" alt="Cover Image" style="max-height: 200px;">
                         <p>URL: {{ $book->Cover_Image_URL }}</p>
                         <p>Created At: {{ $book->created_at }}</p>
                         <p>Updated At: {{ $book->updated_at }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ route('books.index') }}" class="btn btn-secondary">Back</a>
                     </div>
                 </div>
             </div>

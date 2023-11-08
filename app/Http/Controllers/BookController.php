@@ -22,27 +22,30 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'Title' => 'required',
-            'Author' => 'required',
-            'Genre' => 'required',
-            'Publication_Year' => 'required',
-            'ISBN' => 'required',
-            'Cover_Image_URL' => 'nullable',
+            'Title' => 'bail|required',
+            'Author' => 'bail|required|string|not_regex:/[0-9]/',
+            'Genre' => 'bail|required|string|not_regex:/[0-9]/',
+            'Publication_Year' => 'bail|required|date_format:Y',
+            'ISBN' => 'required|regex:/^\d{12}$/',
+            'Cover_Image_URL' => 'bail|required|image', // Kiểm tra loại ảnh và kích thước tối đa là 2MB
         ]);
-        
+    
         $image = $request->file("Cover_Image_URL");
     
-        $path = $image->storePublicly("images", "public");
-        
+        if ($image) {
+            $path = $image->storePublicly("images", "public");
+        }
+    
         $book = new Book;
         $book->Title = $request->get("Title");
         $book->Author = $request->get("Author");
         $book->Genre = $request->get("Genre");
         $book->Publication_Year = $request->get("Publication_Year");
         $book->ISBN = $request->get("ISBN");
-        $book->Cover_Image_URL =    $path;
-
+        $book->Cover_Image_URL = $path ?? null;
+    
         $book->save();
+    
         return redirect()->route('books.index')
             ->with('success', 'Book updated successfully.');
     }
@@ -53,36 +56,33 @@ class BookController extends Controller
     }
 
     public function update(Request $request, Book $book)
-    {
-        
-        $validatedData = $request->validate([
-            'Title' => 'required',
-            'Author' => 'required',
-            'Genre' => 'required',
-            'Publication_Year' => 'required',
-            'ISBN' => 'required',
-            'Cover_Image_URL' => 'required|image',
-        ]);
-        
-        $image = $request->file("Cover_Image_URL");
-        $content = $image->getContent();
-        if(Storage::disk("public")->exists($book->Cover_Image_URL)){
-            Storage::disk("public")->put($book->Cover_Image_URL, $content);
-        }
-        else{
-            $path = $image->storePublicly("images", "public");
-            $book->Cover_Image_URL = $path;
-        }
-        $book->Title = $request->get("Title");
-        $book->Author = $request->get("Author");
-        $book->Genre = $request->get("Genre");
-        $book->Publication_Year = $request->get("Publication_Year");
-        $book->ISBN = $request->get("ISBN");
+{
+    $validatedData = $request->validate([
+        'Title' => 'bail|required',
+        'Author' => 'bail|required|string|not_regex:/[0-9]/',
+        'Genre' => 'bail|required|string|not_regex:/[0-9]/',
+        'Publication_Year' => 'bail|required|date_format:Y',
+        'ISBN' => 'required|regex:/^\d{12}$/',
+        'Cover_Image_URL' => 'image|max:2048', // Kiểm tra loại ảnh và kích thước tối đa là 2MB
+    ]);
 
-        $book->save();
-        return redirect()->route('books.index')
-            ->with('success', 'Book updated successfully.');
+    if ($request->hasFile('Cover_Image_URL')) {
+        $image = $request->file("Cover_Image_URL");
+        $path = $image->storePublicly("images", "public");
+        $book->Cover_Image_URL = $path;
     }
+
+    $book->Title = $request->get("Title");
+    $book->Author = $request->get("Author");
+    $book->Genre = $request->get("Genre");
+    $book->Publication_Year = $request->get("Publication_Year");
+    $book->ISBN = $request->get("ISBN");
+
+    $book->save();
+
+    return redirect()->route('books.index')
+        ->with('success', 'Book updated successfully.');
+}
 
     public function destroy(Book $book)
     {

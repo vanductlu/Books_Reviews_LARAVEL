@@ -10,8 +10,8 @@ class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::orderby('id','desc')->paginate(10); //phân trang liên kết với 2 button ngắn gọn hơn paginate;
-        return view('books.index', compact('books'));
+        $books = Book::orderby('id','desc')->paginate(10); //sắp xếp theo trường 'id' theo thứ tự giảm dần và được phân trang với mỗi trang chứa tối đa 10 bản ghi
+        return view('books.index', compact('books'));//Kết quả này được trả về cho một view có tên là 'books.index', với biến $books được truyền theo dạng compact.
     }
 
     public function create()
@@ -30,19 +30,21 @@ class BookController extends Controller
             'Cover_Image_URL' => 'bail|required|image', // Kiểm tra loại ảnh và kích thước tối đa là 2MB
         ]);
     
-        $image = $request->file("Cover_Image_URL");
+        $image = $request->file("Cover_Image_URL"); //Dòng này lấy tệp tin (file) được gửi lên với tên "Cover_Image_URL" từ yêu cầu.
     
-        if ($image) {
-            $path = $image->storePublicly("images", "public");
+        if ($image) { //nếu có tệp tin hình ảnh được gửi lên.
+            $path = $image->storePublicly("images", "public");//hình ảnh sẽ được lưu trữ vào thư mục "images" với quyền truy cập công khai trong lưu trữ "public" 
         }
     
         $book = new Book;
+        //các phương thức get được sử dụng để truy xuất dữ liệu từ đối tượng yêu cầu ($request). 
+        //Mỗi lệnh get đều nhắm vào một trường cụ thể trong yêu cầu và trích xuất giá trị tương ứng
         $book->Title = $request->get("Title");
         $book->Author = $request->get("Author");
         $book->Genre = $request->get("Genre");
         $book->Publication_Year = $request->get("Publication_Year");
         $book->ISBN = $request->get("ISBN");
-        $book->Cover_Image_URL = $path ?? null;
+        $book->Cover_Image_URL = $path ?? null; //Trong trường hợp không có hình ảnh được tải lên, biến $path sẽ được gán giá trị mặc định là null.
     
         $book->save();
     
@@ -66,10 +68,12 @@ class BookController extends Controller
         'Cover_Image_URL' => 'image|max:2048', // Kiểm tra loại ảnh và kích thước tối đa là 2MB
     ]);
 
-    if ($request->hasFile('Cover_Image_URL')) {
-        $image = $request->file("Cover_Image_URL");
-        $path = $image->storePublicly("images", "public");
+    if ($request->hasFile('Cover_Image_URL')) { //Dòng này kiểm tra xem yêu cầu có chứa tệp tin được gửi lên với tên 'Cover_Image_URL' không
+        $image = $request->file("Cover_Image_URL");//Dòng này lấy tệp tin được gửi lên với tên 'Cover_Image_URL' từ yêu cầu và gán cho biến $image.
+        $path = $image->storePublicly("images", "public"); //Dòng này lưu trữ tệp tin hình ảnh vào thư mục "images" trong lưu trữ "public" của
+        // trả về đường dẫn của tệp tin.
         $book->Cover_Image_URL = $path;
+        //Đường dẫn của hình ảnh được gán cho thuộc tính 'Cover_Image_URL' của đối tượng sách để lưu trữ vào cơ sở dữ liệu
     }
 
     $book->Title = $request->get("Title");

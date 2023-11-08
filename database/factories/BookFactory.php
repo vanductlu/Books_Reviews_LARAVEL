@@ -17,12 +17,12 @@ class BookFactory extends Factory
     public function definition(): array
     {
         return [
-            'Title' => $this->faker->sentence,
-            'Author' => $this->faker->name,
-            'Genre' => $this->faker->word,
-            'Publication_Year' => $this->faker->year,
-            'ISBN' => $this->faker->isbn13,
-            'Cover_Image_URL' => $this->faker->imageUrl,
+            'Title' => $this->faker->sentence,//tạo 1 tiêu đề ngẫu nhiên
+            'Author' => $this->faker->name,//tạo 1 tên tác giả
+            'Genre' => $this->faker->word,//tạo ngẫu nhiên thể loại sách
+            'Publication_Year' => $this->faker->year,//tạo 1 năm ngẫu nhiên
+            'ISBN' => $this->faker->isbn13,//tạo 1 số ISBN 13 số
+            'Cover_Image_URL' => $this->faker->imageUrl,//tạo 1 url ảnh ngẫu nhiên
         ];
     }
 }

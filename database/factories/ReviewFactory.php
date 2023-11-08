@@ -21,10 +21,10 @@ class ReviewFactory extends Factory
 
         return [
             'book_id' => function () {
-                return Book::inRandomOrder()->first()->id;
+                return Book::inRandomOrder()->first()->id; //random 1 giá trị ngẫu nhiễn của cột book id 
             },
             'user_id' => function () {
-                return User::inRandomOrder()->first()->id;
+                return User::inRandomOrder()->first()->id;//random 1 giá trị ngẫu nhiễn của cột user id 
             },
             'rating' => $faker->numberBetween(1, 5),
             'review_text' => $faker->paragraph,

@@ -3,7 +3,7 @@
 @section('content')
     <h1>Books</h1>
     <div class="mt-4">
-        <a href="{{ route('books.create') }}" class="btn btn-success">ADD NEW</a>
+        <a href="{{ route('books.create') }}" class="btn btn-success my-2">ADD NEW</a>
     </div>
     <div class="table-responsive">
         <table class="table table-bordered align-middle">

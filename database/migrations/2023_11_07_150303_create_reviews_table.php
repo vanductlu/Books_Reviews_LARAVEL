@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('review_text');
             $table->date('review_date')->nullable();
             $table->timestamps();
-            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
+            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');//Khi một bản ghi trong bảng 'books' được xóa, tất cả các bản ghi liên quan trong bảng hiện tại sẽ bị xóa theo cơ chế 'cascade' (lan truyền).
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

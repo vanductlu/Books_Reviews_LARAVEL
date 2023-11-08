@@ -17,15 +17,15 @@ class Review extends Model
 
     public function book()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsTo(Book::class); //xác định mối quan hệ "một-nhiều" (many-to-one) giữa mô hình hiện tại và mô hình Book. Điều này đề cập đến việc một đánh giá (review) thuộc về một cuốn sách cụ thể.
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class); //xác định mối quan hệ "một-nhiều" (many-to-one) giữa mô hình hiện tại và mô hình User
     }
 
-    protected static function boot()
+    protected static function boot() // được ghi đè để định nghĩa hành vi xóa liên quan
     {
         parent::boot();
 

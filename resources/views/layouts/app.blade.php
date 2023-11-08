@@ -38,14 +38,14 @@
 		</footer>
 </body>
 <script>
-			const image = document.querySelector('#image-upload');
-			const inputImage = document.querySelector('#Cover_Image_URL');
+			const image = document.querySelector('#image-upload');//Dòng này lấy phần tử từ DOM có id là 'image-upload' và gán nó cho biến image
+			const inputImage = document.querySelector('#Cover_Image_URL'); // Dòng này lấy phần tử từ DOM có id là 'Cover_Image_URL' và gán nó cho biến inputImage
 
-			inputImage.addEventListener('change', (e) => {
-				const files = e.target.files;
-				const fileImage = files[0];
-				const url = URL.createObjectURL(fileImage);
-				image.src = url;
+			inputImage.addEventListener('change', (e) => { //Dòng này thêm một sự kiện 'change' cho phần tử inputImage. Khi người dùng chọn một tệp tin hình ảnh, sự kiện này sẽ được kích hoạt.
+				const files = e.target.files; // lấy danh sách các tệp tin được chọn bằng cách sử dụng sự kiện e.
+				const fileImage = files[0]; //lấy tệp tin đầu tiên từ danh sách tệp tin được chọn.
+				const url = URL.createObjectURL(fileImage);// tạo một URL đại diện cho tệp tin hình ảnh được chọn.
+				image.src = url;//gán URL vừa tạo cho thuộc tính src của phần tử image
 			})
 		</script>
 </html>

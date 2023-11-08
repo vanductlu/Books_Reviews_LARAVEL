@@ -5,10 +5,11 @@
     <div class="mt-4">
         <a href="{{ route('books.create') }}" class="btn btn-success">ADD NEW</a>
     </div>
-    <div class="table-responsive"> <!-- Bổ sung lớp CSS "table-responsive" để làm cho bảng tự động cuộn -->
+    <div class="table-responsive">
         <table class="table table-bordered align-middle">
             <thead>
                 <tr class="text-center">
+                    <th>ID</th> <!-- Thêm cột ID -->
                     <th>Title</th>
                     <th>Author</th>
                     <th>Genre</th>
@@ -22,15 +23,16 @@
             <tbody>
                 @foreach ($books as $book)
                     <tr class="text-center">
+                        <td>{{ $book->id }}</td> <!-- Hiển thị ID -->
                         <td>{{ $book->Title }}</td>
                         <td>{{ $book->Author }}</td>
                         <td>{{ $book->Genre }}</td>
                         <td>{{ $book->Publication_Year }}</td>
                         <td>{{ $book->ISBN }}</td>
                         <td>  
-                                <img class="img-fluid" src="{{asset('/storage/'. $book->Cover_Image_URL)}}" style="max-height: 100px;max-width: 120px;"onerror="handleImageError(this)">         
+                                <img class="img-fluid" src="{{asset('/storage/'. $book->Cover_Image_URL)}}" style="max-height: 100px;max-width: 120px;" onerror="handleImageError(this)">         
                         </td>
-                        <td>{{ $book-> Cover_Image_URL}}</td>
+                        <td>{{ $book->Cover_Image_URL }}</td>
                         <td class="d-flex justify-content-center align-items-center py-3">
                             <a href="{{ route('books.show', $book->id) }}" class="btn btn-primary mx-1">Show <i class="bi bi-eye"></i></a>
                             <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning mx-1">Edit <i class="bi bi-pencil-fill"></i></a>
@@ -46,13 +48,15 @@
         </table>
     </div>
 
-    <div class="mt-4">
-        {{ $books->links() }}
+    <div>
+        <div>
+            {{ $books->links() }} <!-- Hiển thị phân trang -->
+        </div>
     </div>
     <script>
-function handleImageError(image) {
-  image.onerror = null; // Ngăn chặn việc gọi lại nếu xảy ra lỗi lần thứ hai
-  image.src = "{{ asset('/img/error.png')}}";
-}
-</script>
+        function handleImageError(image) {
+          image.onerror = null;
+          image.src = "{{ asset('/img/error.png')}}";
+        }
+    </script>
 @endsection

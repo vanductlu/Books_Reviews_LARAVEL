@@ -10,7 +10,7 @@ class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::orderby('id','desc')->simplepaginate(10); //phân trang liên kết với 2 button ngắn gọn hơn paginate;
+        $books = Book::orderby('id','desc')->paginate(10); //phân trang liên kết với 2 button ngắn gọn hơn paginate;
         return view('books.index', compact('books'));
     }
 
